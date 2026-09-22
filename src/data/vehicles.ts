@@ -3,23 +3,32 @@ import suvImg from "@/assets/car-suv.jpg";
 import coupeImg from "@/assets/car-coupe.jpg";
 import hatchImg from "@/assets/car-hatch.jpg";
 import convertibleImg from "@/assets/car-convertible.jpg";
+import gtElectricImg from "@/assets/car-gt-electric.jpg";
+import truckImg from "@/assets/car-truck.jpg";
+import hyperImg from "@/assets/car-hyper.jpg";
 import bikeSportImg from "@/assets/bike-sport.jpg";
 import bikeCruiserImg from "@/assets/bike-cruiser.jpg";
 import bikeElectricImg from "@/assets/bike-electric.jpg";
 import bikeTouringImg from "@/assets/bike-touring.jpg";
 import bikeCafeImg from "@/assets/bike-cafe.jpg";
 import bikeDirtImg from "@/assets/bike-dirt.jpg";
+import bikeScramblerImg from "@/assets/bike-scrambler.jpg";
 
 export type Category = "car" | "bike";
+export type Stock = "in-stock" | "limited" | "pre-order";
 
 export interface Vehicle {
   id: string;
   name: string;
   category: Category;
   type: string;
+  /** Current price (what the customer pays today) */
   price: number;
+  /** Original list price — shown struck through when higher than price */
+  msrp: number;
   rentPerDay: number;
   img: string;
+  gallery: string[];
   hp: string;
   speed: string;
   drivetrain: string;
@@ -27,9 +36,19 @@ export interface Vehicle {
   topSpeed: string;
   seats: string;
   year: string;
+  transmission: string;
+  range: string;
   description: string;
   features: string[];
+  stock: Stock;
+  unitsAvailable: number;
+  location: string;
+  readyIn: string;
 }
+
+const carGallery = (main: string) => [main, coupeImg, sedanImg, suvImg].filter((v, i, a) => a.indexOf(v) === i).slice(0, 4);
+const bikeGallery = (main: string) =>
+  [main, bikeSportImg, bikeCruiserImg, bikeTouringImg].filter((v, i, a) => a.indexOf(v) === i).slice(0, 4);
 
 export const vehicles: Vehicle[] = [
   {
@@ -37,9 +56,11 @@ export const vehicles: Vehicle[] = [
     name: "Shadow GT",
     category: "car",
     type: "Sedan",
-    price: 89900,
+    price: 86400,
+    msrp: 89900,
     rentPerDay: 220,
     img: sedanImg,
+    gallery: carGallery(sedanImg),
     hp: "450 HP",
     speed: "3.2s 0-60",
     drivetrain: "All-Wheel Drive",
@@ -47,9 +68,15 @@ export const vehicles: Vehicle[] = [
     topSpeed: "186 mph",
     seats: "5 seats",
     year: "2026",
+    transmission: "8-speed dual clutch",
+    range: "520 mi combined",
     description:
-      "A executive-grade performance sedan that pairs whisper-quiet hybrid cruising with track-ready launch response.",
+      "An executive-grade performance sedan that pairs whisper-quiet hybrid cruising with track-ready launch response.",
     features: ["Adaptive air suspension", "Nappa leather interior", "Matrix LED lighting", "360° driver assist"],
+    stock: "in-stock",
+    unitsAvailable: 6,
+    location: "Downtown Showroom",
+    readyIn: "Same-day delivery",
   },
   {
     id: "atlas-x",
@@ -57,8 +84,10 @@ export const vehicles: Vehicle[] = [
     category: "car",
     type: "SUV",
     price: 72500,
+    msrp: 72500,
     rentPerDay: 180,
     img: suvImg,
+    gallery: carGallery(suvImg),
     hp: "380 HP",
     speed: "4.1s 0-60",
     drivetrain: "Dual Motor AWD",
@@ -66,18 +95,25 @@ export const vehicles: Vehicle[] = [
     topSpeed: "155 mph",
     seats: "7 seats",
     year: "2026",
-    description:
-      "A fully electric family SUV with 410 miles of range, three rows of space and a panoramic glass roof.",
+    transmission: "Single-speed automatic",
+    range: "410 mi electric",
+    description: "A fully electric family SUV with 410 miles of range, three rows of space and a panoramic glass roof.",
     features: ["410 mi range", "Panoramic glass roof", "Heated 3-row seating", "Autonomous highway pilot"],
+    stock: "in-stock",
+    unitsAvailable: 9,
+    location: "North Delivery Hub",
+    readyIn: "Ready in 2 days",
   },
   {
     id: "apex-rs",
     name: "Apex RS",
     category: "car",
     type: "Coupe",
-    price: 124000,
+    price: 118900,
+    msrp: 124000,
     rentPerDay: 340,
     img: coupeImg,
+    gallery: carGallery(coupeImg),
     hp: "620 HP",
     speed: "2.8s 0-60",
     drivetrain: "Rear-Wheel Drive",
@@ -85,18 +121,25 @@ export const vehicles: Vehicle[] = [
     topSpeed: "205 mph",
     seats: "2 seats",
     year: "2026",
-    description:
-      "Track-bred aerodynamics, carbon-ceramic brakes and a twin-turbo V8 tuned for pure driver engagement.",
+    transmission: "7-speed PDK",
+    range: "340 mi per tank",
+    description: "Track-bred aerodynamics, carbon-ceramic brakes and a twin-turbo V8 tuned for pure driver engagement.",
     features: ["Carbon-ceramic brakes", "Active rear wing", "Launch control", "Alcantara racing buckets"],
+    stock: "limited",
+    unitsAvailable: 2,
+    location: "Flagship Showroom",
+    readyIn: "Ready in 5 days",
   },
   {
     id: "volt-s",
     name: "Volt S",
     category: "car",
     type: "Hatchback",
-    price: 54300,
+    price: 51900,
+    msrp: 54300,
     rentPerDay: 130,
     img: hatchImg,
+    gallery: carGallery(hatchImg),
     hp: "320 HP",
     speed: "4.6s 0-60",
     drivetrain: "Front-Wheel Drive",
@@ -104,9 +147,15 @@ export const vehicles: Vehicle[] = [
     topSpeed: "149 mph",
     seats: "5 seats",
     year: "2026",
+    transmission: "Single-speed automatic",
+    range: "290 mi electric",
     description:
       "A compact electric hot hatch built for the city — quick charging, agile handling and premium finish throughout.",
     features: ["18-min fast charge", "Sport-tuned chassis", "Wireless CarPlay", "Ambient cabin lighting"],
+    stock: "in-stock",
+    unitsAvailable: 12,
+    location: "City Store",
+    readyIn: "Same-day delivery",
   },
   {
     id: "zephyr-roadster",
@@ -114,8 +163,10 @@ export const vehicles: Vehicle[] = [
     category: "car",
     type: "Convertible",
     price: 148700,
+    msrp: 148700,
     rentPerDay: 410,
     img: convertibleImg,
+    gallery: carGallery(convertibleImg),
     hp: "580 HP",
     speed: "3.0s 0-60",
     drivetrain: "Rear-Wheel Drive",
@@ -123,18 +174,26 @@ export const vehicles: Vehicle[] = [
     topSpeed: "198 mph",
     seats: "2 seats",
     year: "2026",
+    transmission: "6-speed manual",
+    range: "310 mi per tank",
     description:
       "An open-top grand tourer with a 12-second soft top, rear-axle steering and a naturally aspirated flat-six soundtrack.",
     features: ["12s soft top", "Rear-axle steering", "Sport exhaust", "Heated neck-level vents"],
+    stock: "limited",
+    unitsAvailable: 3,
+    location: "Flagship Showroom",
+    readyIn: "Ready in 7 days",
   },
   {
     id: "titan-sport",
     name: "Titan Sport",
     category: "car",
     type: "Crossover",
-    price: 96400,
+    price: 92900,
+    msrp: 96400,
     rentPerDay: 250,
     img: suvImg,
+    gallery: carGallery(suvImg),
     hp: "500 HP",
     speed: "3.7s 0-60",
     drivetrain: "All-Wheel Drive",
@@ -142,9 +201,96 @@ export const vehicles: Vehicle[] = [
     topSpeed: "174 mph",
     seats: "5 seats",
     year: "2026",
+    transmission: "9-speed automatic",
+    range: "480 mi combined",
     description:
       "The performance crossover — coupe silhouette, hybrid torque fill and an adaptive chassis for every surface.",
     features: ["Adaptive damping", "Head-up display", "Bowers audio", "Towing package"],
+    stock: "in-stock",
+    unitsAvailable: 5,
+    location: "North Delivery Hub",
+    readyIn: "Ready in 3 days",
+  },
+  {
+    id: "lumen-gt",
+    name: "Lumen GT",
+    category: "car",
+    type: "Electric GT",
+    price: 134500,
+    msrp: 142000,
+    rentPerDay: 390,
+    img: gtElectricImg,
+    gallery: carGallery(gtElectricImg),
+    hp: "760 HP",
+    speed: "2.6s 0-60",
+    drivetrain: "Tri Motor AWD",
+    engine: "Tri Motor Electric",
+    topSpeed: "196 mph",
+    seats: "4 seats",
+    year: "2026",
+    transmission: "Single-speed automatic",
+    range: "445 mi electric",
+    description:
+      "A silent electric grand tourer — tri-motor launch control, 800V charging and a hand-stitched four-seat cabin.",
+    features: ["800V ultra-fast charge", "Air suspension", "Active noise cancelling", "Massaging front seats"],
+    stock: "limited",
+    unitsAvailable: 4,
+    location: "Flagship Showroom",
+    readyIn: "Ready in 4 days",
+  },
+  {
+    id: "ranger-ev",
+    name: "Ranger EV",
+    category: "car",
+    type: "Pickup",
+    price: 78300,
+    msrp: 82000,
+    rentPerDay: 200,
+    img: truckImg,
+    gallery: carGallery(truckImg),
+    hp: "820 HP",
+    speed: "3.4s 0-60",
+    drivetrain: "Quad Motor AWD",
+    engine: "Quad Motor Electric",
+    topSpeed: "130 mph",
+    seats: "5 seats",
+    year: "2026",
+    transmission: "Single-speed automatic",
+    range: "380 mi electric",
+    description:
+      "An electric pickup with 11,000 lb towing, a locking gear tunnel and quad-motor traction on any terrain.",
+    features: ["11,000 lb towing", "Onboard power outlets", "Underbody armour", "Air suspension lift"],
+    stock: "in-stock",
+    unitsAvailable: 8,
+    location: "North Delivery Hub",
+    readyIn: "Ready in 2 days",
+  },
+  {
+    id: "vortex-one",
+    name: "Vortex One",
+    category: "car",
+    type: "Hypercar",
+    price: 389000,
+    msrp: 410000,
+    rentPerDay: 1250,
+    img: hyperImg,
+    gallery: carGallery(hyperImg),
+    hp: "1,180 HP",
+    speed: "2.1s 0-60",
+    drivetrain: "Hybrid AWD",
+    engine: "5.0L V10 Hybrid",
+    topSpeed: "248 mph",
+    seats: "2 seats",
+    year: "2026",
+    transmission: "8-speed sequential",
+    range: "260 mi per tank",
+    description:
+      "A limited-run hybrid hypercar — full carbon monocoque, active aero and a 1,180 HP V10 hybrid powertrain.",
+    features: ["Carbon monocoque", "Active aero", "Track telemetry", "Bespoke fitting session"],
+    stock: "pre-order",
+    unitsAvailable: 1,
+    location: "By appointment",
+    readyIn: "Build slot Q1 2027",
   },
 
   {
@@ -152,9 +298,11 @@ export const vehicles: Vehicle[] = [
     name: "Raptor 900",
     category: "bike",
     type: "Sportbike",
-    price: 18900,
+    price: 17900,
+    msrp: 18900,
     rentPerDay: 85,
     img: bikeSportImg,
+    gallery: bikeGallery(bikeSportImg),
     hp: "180 HP",
     speed: "2.9s 0-60",
     drivetrain: "Chain Drive",
@@ -162,9 +310,14 @@ export const vehicles: Vehicle[] = [
     topSpeed: "186 mph",
     seats: "2 seats",
     year: "2026",
-    description:
-      "A homologated superbike with race electronics, quickshifter and a full-carbon fairing package.",
+    transmission: "6-speed quickshift",
+    range: "180 mi per tank",
+    description: "A homologated superbike with race electronics, quickshifter and a full-carbon fairing package.",
     features: ["6-axis IMU", "Up/down quickshifter", "Öhlins suspension", "Carbon fairings"],
+    stock: "in-stock",
+    unitsAvailable: 7,
+    location: "Moto Garage",
+    readyIn: "Same-day pickup",
   },
   {
     id: "iron-cruiser",
@@ -172,8 +325,10 @@ export const vehicles: Vehicle[] = [
     category: "bike",
     type: "Cruiser",
     price: 22400,
+    msrp: 22400,
     rentPerDay: 95,
     img: bikeCruiserImg,
+    gallery: bikeGallery(bikeCruiserImg),
     hp: "120 HP",
     speed: "3.8s 0-60",
     drivetrain: "Belt Drive",
@@ -181,18 +336,25 @@ export const vehicles: Vehicle[] = [
     topSpeed: "125 mph",
     seats: "2 seats",
     year: "2026",
-    description:
-      "Big-bore V-twin torque, blacked-out chrome and a low-slung stance built for long highway pulls.",
+    transmission: "6-speed manual",
+    range: "210 mi per tank",
+    description: "Big-bore V-twin torque, blacked-out chrome and a low-slung stance built for long highway pulls.",
     features: ["Torque-rich V-twin", "Cruise control", "Bagger-ready mounts", "Custom pipes"],
+    stock: "in-stock",
+    unitsAvailable: 4,
+    location: "Moto Garage",
+    readyIn: "Ready in 2 days",
   },
   {
     id: "pulse-ev",
     name: "Pulse EV",
     category: "bike",
     type: "Electric",
-    price: 15600,
+    price: 14900,
+    msrp: 15600,
     rentPerDay: 70,
     img: bikeElectricImg,
+    gallery: bikeGallery(bikeElectricImg),
     hp: "150 HP",
     speed: "3.1s 0-60",
     drivetrain: "Direct Drive",
@@ -200,18 +362,25 @@ export const vehicles: Vehicle[] = [
     topSpeed: "140 mph",
     seats: "1 seat",
     year: "2026",
-    description:
-      "Silent, instant torque and zero maintenance — the electric naked bike with 160 miles of city range.",
+    transmission: "Single-speed",
+    range: "160 mi electric",
+    description: "Silent, instant torque and zero maintenance — the electric naked bike with 160 miles of city range.",
     features: ["160 mi range", "Regenerative braking", "App connectivity", "Ride modes"],
+    stock: "in-stock",
+    unitsAvailable: 10,
+    location: "City Store",
+    readyIn: "Same-day pickup",
   },
   {
     id: "nomad-adv",
     name: "Nomad ADV",
     category: "bike",
     type: "Touring",
-    price: 24800,
+    price: 23900,
+    msrp: 24800,
     rentPerDay: 110,
     img: bikeTouringImg,
+    gallery: bikeGallery(bikeTouringImg),
     hp: "160 HP",
     speed: "3.4s 0-60",
     drivetrain: "Shaft Drive",
@@ -219,18 +388,26 @@ export const vehicles: Vehicle[] = [
     topSpeed: "137 mph",
     seats: "2 seats",
     year: "2026",
+    transmission: "6-speed manual",
+    range: "260 mi per tank",
     description:
       "An adventure tourer with hard luggage, long-travel suspension and heated everything for continent crossing.",
     features: ["Hard panniers", "Heated grips & seat", "Semi-active suspension", "Off-road ride mode"],
+    stock: "limited",
+    unitsAvailable: 3,
+    location: "Moto Garage",
+    readyIn: "Ready in 4 days",
   },
   {
     id: "vintage-cafe",
     name: "Vintage Café",
     category: "bike",
     type: "Café Racer",
-    price: 13200,
+    price: 12600,
+    msrp: 13200,
     rentPerDay: 60,
     img: bikeCafeImg,
+    gallery: bikeGallery(bikeCafeImg),
     hp: "95 HP",
     speed: "4.2s 0-60",
     drivetrain: "Chain Drive",
@@ -238,9 +415,15 @@ export const vehicles: Vehicle[] = [
     topSpeed: "118 mph",
     seats: "2 seats",
     year: "2026",
+    transmission: "5-speed manual",
+    range: "190 mi per tank",
     description:
       "Hand-finished retro styling with modern brakes and fuelling — a café racer you can actually ride daily.",
     features: ["Brushed alloy tank", "Clip-on bars", "Brembo front brakes", "Bar-end mirrors"],
+    stock: "in-stock",
+    unitsAvailable: 5,
+    location: "City Store",
+    readyIn: "Ready in 2 days",
   },
   {
     id: "trail-450",
@@ -248,8 +431,10 @@ export const vehicles: Vehicle[] = [
     category: "bike",
     type: "Dirt Bike",
     price: 9800,
+    msrp: 9800,
     rentPerDay: 45,
     img: bikeDirtImg,
+    gallery: bikeGallery(bikeDirtImg),
     hp: "55 HP",
     speed: "4.8s 0-60",
     drivetrain: "Chain Drive",
@@ -257,14 +442,54 @@ export const vehicles: Vehicle[] = [
     topSpeed: "103 mph",
     seats: "1 seat",
     year: "2026",
-    description:
-      "A lightweight enduro machine — 12 inches of travel, street-legal lighting and a featherweight frame.",
+    transmission: "5-speed manual",
+    range: "110 mi per tank",
+    description: "A lightweight enduro machine — 12 inches of travel, street-legal lighting and a featherweight frame.",
     features: ["12in suspension travel", "Street-legal kit", "Aluminium frame", "Traction control"],
+    stock: "in-stock",
+    unitsAvailable: 9,
+    location: "Moto Garage",
+    readyIn: "Same-day pickup",
+  },
+  {
+    id: "dune-scrambler",
+    name: "Dune Scrambler",
+    category: "bike",
+    type: "Scrambler",
+    price: 15400,
+    msrp: 16200,
+    rentPerDay: 75,
+    img: bikeScramblerImg,
+    gallery: bikeGallery(bikeScramblerImg),
+    hp: "88 HP",
+    speed: "4.4s 0-60",
+    drivetrain: "Chain Drive",
+    engine: "900cc Parallel Twin",
+    topSpeed: "115 mph",
+    seats: "2 seats",
+    year: "2026",
+    transmission: "6-speed manual",
+    range: "170 mi per tank",
+    description:
+      "Retro scrambler attitude with dual-purpose tyres, high-mount pipes and a chassis happy on gravel or tarmac.",
+    features: ["Dual-purpose tyres", "High-mount exhaust", "Switchable ABS", "Bench seat"],
+    stock: "limited",
+    unitsAvailable: 2,
+    location: "Moto Garage",
+    readyIn: "Ready in 3 days",
   },
 ];
 
 export const cars = vehicles.filter((v) => v.category === "car");
 export const bikes = vehicles.filter((v) => v.category === "bike");
+
+export const getVehicle = (id: string) => vehicles.find((v) => v.id === id);
+
+export const stockLabel: Record<Stock, string> = {
+  "in-stock": "In stock",
+  limited: "Limited stock",
+  "pre-order": "Pre-order",
+};
 
 export const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
